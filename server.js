@@ -6,7 +6,6 @@ const path = require("path");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const { mainRoutes } = require("./src/Router");
-const { ResponseHandler } = require("./src/Controllers/Response-Handler");
 
 class Application {
   constructor() {

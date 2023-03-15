@@ -3,11 +3,12 @@ const { isItExist } = require("../../Utils/existDocument");
 const { validationResult } = require("express-validator");
 const { hashPass, comparePass } = require("../../Utils/hashPass");
 const { generateToken } = require("../../Utils/token");
-const { ResponseHandler } = require("../Response-Handler");
+const { ResponseHandler } = require("../../Utils/Response-Handler");
 
 class AuthController {
   async singUp(req, res, next) {
     try {
+      const response = new ResponseHandler(res);
       const result = validationResult(req);
       if (result.errors.length > 0)
         throw {
@@ -43,14 +44,12 @@ class AuthController {
 
       const token = generateToken({ username, role });
 
-      res
-        .cookie("token", token, { maxAge: 86400000, httpOnly: true })
-        .status(201)
-        .json({
-          status: 201,
-          message: "created",
-          data: user,
-        });
+      response.setCookie("token", token, { maxAge: 86400000, httpOnly: true });
+      response.created({
+        status: 201,
+        message: "created",
+        data: user,
+      });
     } catch (err) {
       next(err);
     }
@@ -58,6 +57,7 @@ class AuthController {
 
   async logIn(req, res, next) {
     try {
+      const response = new ResponseHandler(res);
       const result = validationResult(req);
       if (result.errors.length > 0)
         throw { status: 400, message: result.errors };
@@ -75,33 +75,19 @@ class AuthController {
         throw { status: 404, message: "username or password is wrong" };
 
       const token = generateToken({ username, role: user.role });
-      res
-        .cookie("token", token, { maxAge: 86400000, httpOnly: true })
-        .status(200)
-        .json({ status: 200, message: "you loged in" });
+      response.setCookie("token", token, { maxAge: 86400000, httpOnly: true });
+      response.success({ status: 200, message: "you loged in" });
     } catch (err) {
       next(err);
     }
   }
 
   async logOut(req, res, next) {
-    res.clearCookie("token").status(200).json({
-      status: 200,
-      message: "you loged out",
-      data: req.user,
-    });
+    const response = new ResponseHandler(res);
+
+    response.clearCookie("token");
+    response.success({ message: "you loged out" });
   }
-
-
-  async test() {
-    try {
-      
-    } catch (err) {
-      next(err)
-    }
-  }
-
-
 }
 
 module.exports = { AuthController: new AuthController() };

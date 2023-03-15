@@ -1,4 +1,4 @@
-const app = require('express').Router()
+const router = require('express').Router()
 
 
 
@@ -19,5 +19,5 @@ const app = require('express').Router()
 
 
 module.exports = {
-    pagesRouter : app
+    pagesRouter : router
 }
