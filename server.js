@@ -5,7 +5,7 @@ const http = require("http");
 const path = require("path");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
-const { mainRoutes } = require("./src/Router");
+const { mainRoutes } = require("./src/Routes/Router");
 
 class Application {
   constructor() {
