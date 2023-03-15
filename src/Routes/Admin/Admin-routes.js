@@ -8,7 +8,7 @@ const { checkOwnerRole } = require('../../middlewares/owner_role')
 
 
 router.post("/create-user", checkAdminRole , AdminController.createUser)
-router.patch("/update-user", checkAdminRole , AdminController.updateUser)
+router.patch("/update-user/:id", checkAdminRole , AdminController.updateUser)
 router.get("/user/:username" , checkAdminRole , AdminController.getUserByUserName)
 router.get("/all-users" , checkAdminRole , AdminController.getUsersList)
 router.delete("/delete-user/:username" , checkAdminRole , AdminController.deleteUser)
