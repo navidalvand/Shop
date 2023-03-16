@@ -1,13 +1,13 @@
 const { UserModel } = require("../models/User_model");
 const { verifyToken } = require("../Utils/token");
-const { isItExist } = require("../Utils/existDocument");
+const { ModelHandler } = require("../Utils/Model-Handler");
 
 const autoLogin = async (req, res, next) => {
   const token = req.cookies.token;
   if (!token)
     return next({ status: 401, message: "please login to your account" });
   const result = verifyToken(token);
-  const user = await isItExist(UserModel , [{username : result.username}])
+  const user = await ModelHandler.isItExist(UserModel , [{username : result.username}])
   if (!user) return next({ status: 404, message: "user not fond" });
   req.user = user;
   next();

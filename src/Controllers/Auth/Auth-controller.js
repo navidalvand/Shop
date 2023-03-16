@@ -1,5 +1,5 @@
 const { UserModel } = require("../../models/User_model");
-const { isItExist } = require("../../Utils/existDocument");
+const { ModelHandler } = require("../../Utils/Model-Handler");
 const { validationResult } = require("express-validator");
 const { hashPass, comparePass } = require("../../Utils/hashPass");
 const { generateToken } = require("../../Utils/token");
@@ -23,7 +23,7 @@ class AuthController {
         password,
         role = "user",
       } = req.body;
-      let exist = await isItExist(UserModel, [
+      let exist = await ModelHandler.isItExist(UserModel, [
         { username },
         { phoneNumber },
         { email },
@@ -65,7 +65,7 @@ class AuthController {
       const isLogin = req?.cookies?.token;
       if (isLogin) throw { status: 400, message: "you are login already" };
 
-      const user = await isItExist(UserModel, [{ username }]);
+      const user = await ModelHandler.isItExist(UserModel, [{ username }]);
       if (!user)
         throw { status: 404, message: "username or password is wrong" };
 
