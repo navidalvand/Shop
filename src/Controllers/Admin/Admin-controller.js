@@ -3,13 +3,18 @@ const { ModelHandler } = require("../../Utils/Model-Handler");
 const { hashPass } = require("../../Utils/hashPass");
 const { UserModel } = require("../../models/User_model");
 const { ProductModel } = require("../../models/Product_model");
+const { validationResult } = require("express-validator");
 
 class AdminController {
   async createUser(req, res, next) {
     try {
+      const result = validationResult(req);
+      if (result.errors.length > 0)
+        throw {
+          status: 400,
+          message: result.errors,
+        };
       const { username, phoneNumber, email, password } = req.body;
-      if (!username || !phoneNumber || !email || !password)
-        throw { status: 400, message: "some fields are empty" };
       const existUser = await ModelHandler.isItExist(UserModel, [
         { username },
         { phoneNumber },
@@ -91,7 +96,6 @@ class AdminController {
     try {
       const userID = req.params.id;
       const user = await ModelHandler.getByID(UserModel, userID);
-      console.log(user);
       if (!user) throw { status: 404, message: "user not found" };
       const deleteUser = await ModelHandler.delete(UserModel, { _id: userID });
       if (!deleteUser.acknowledged)
@@ -127,6 +131,25 @@ class AdminController {
     }
   }
 
+  async createProduct(req, res, next) {
+    try {
+      const result = validationResult(req);
+      const {
+        title,
+        description,
+        category,
+        images,
+        type,
+        city,
+        address,
+        price,
+        contact,
+      } = req.body;
+    } catch (err) {
+      next(err);
+    }
+  }
+
   async getProductsList(req, res, next) {
     try {
       const query = req.query;
@@ -146,10 +169,10 @@ class AdminController {
       const productID = req.params.id;
       const product = await ModelHandler.getByID(ProductModel, productID);
       if (!product) throw { status: 404, message: "product not found" };
-      const response = new ResponseHandler(res)
+      const response = new ResponseHandler(res);
       response.success({
-        data : product
-      })
+        data: product,
+      });
     } catch (err) {
       next(err);
     }

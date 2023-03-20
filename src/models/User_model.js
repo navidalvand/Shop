@@ -14,8 +14,12 @@ const userSchema = new mongoose.Schema({
   phoneNumber: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  profileImage: { type: String, default : "http://localhost:3000/default.jpg" },
-  role: { type: String, enum: ["ADMIN", "OWNER", "USER"] , default : "USER" },
+  profileImage: {
+    type: String,
+    reuired : true,
+    default: "http://localhost:3000/default-user.jpg",
+  },
+  role: { type: String, enum: ["ADMIN", "OWNER", "USER"], default: "USER" },
 });
 
 const UserModel = mongoose.model("users", userSchema);

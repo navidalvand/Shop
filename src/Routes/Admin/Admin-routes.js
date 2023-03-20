@@ -1,13 +1,18 @@
 const router = require("express").Router();
 const { AdminController } = require("../../Controllers/Admin/Admin-controller");
 const { checkOwnerRole } = require("../../middlewares/owner_role");
+const { registerValidation } = require("../../validation/auth-validation");
+const { productvalidation } = require("../../validation/product-validation");
 
-router.post("/create-user", AdminController.createUser);
+
+
+router.post("/create-user", registerValidation() , AdminController.createUser);
 router.patch("/update-user/:id", AdminController.updateUser);
 router.get("/user/:id", AdminController.getUserByID);
 router.get("/all-users", AdminController.getUsersList);
 router.delete("/delete-user/:id", AdminController.deleteUser);
 router.patch("/role-update/:id", checkOwnerRole, AdminController.changeUserRole);
+router.post("/create-product", productvalidation() , AdminController.createProduct);
 router.get("/all-products", AdminController.getProductsList);
 router.get("/product/:id", AdminController.getProductByID);
 router.get("/accept-product/:id", AdminController.acceptProduct);
