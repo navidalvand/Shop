@@ -2,6 +2,7 @@ const { ResponseHandler } = require("../../Utils/Response-Handler");
 const { ModelHandler } = require("../../Utils/Model-Handler");
 const { hashPass } = require("../../Utils/hashPass");
 const { UserModel } = require("../../models/User_model");
+const { ProductModel } = require("../../models/Product_model");
 
 class AdminController {
   async createUser(req, res, next) {
@@ -128,9 +129,13 @@ class AdminController {
 
   async getProductsList(req, res, next) {
     try {
-      const query = req.query
-      console.log(query);
-      
+      const query = req.query;
+      const products = await ModelHandler.get(ProductModel, query);
+      if (!products) throw { status: 404, message: "product not found" };
+      const response = new ResponseHandler(res);
+      response.success({
+        data: products,
+      });
     } catch (err) {
       next(err);
     }
@@ -138,6 +143,13 @@ class AdminController {
 
   async getProductByID(req, res, next) {
     try {
+      const productID = req.params.id;
+      const product = await ModelHandler.getByID(ProductModel, productID);
+      if (!product) throw { status: 404, message: "product not found" };
+      const response = new ResponseHandler(res)
+      response.success({
+        data : product
+      })
     } catch (err) {
       next(err);
     }
