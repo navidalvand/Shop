@@ -1,8 +1,18 @@
-const path = require("path");
-const fs = require("fs");
+const multer = require("multer");
 
-function createPath() {
-  const uploadPath = path.join(__dirname, "..", "..", "public");
-  fs.mkdirSync(uploadPath, { recursive: true });
-  console.log(uploadPath)
-}
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/uploads");
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix =
+      Date.now() + "-" + Math.round(Math.random() * 1e9) + file.originalname;
+    cb(null, file.fieldname + "-" + uniqueSuffix);
+  },
+});
+
+const upload = multer({ storage: storage });
+
+module.exports = {
+  upload,
+};

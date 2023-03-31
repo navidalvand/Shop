@@ -8,7 +8,7 @@ const productScheama = new mongoose.Schema({
   images: {
     type: [String],
     required: true,
-    default: "http://localhost:3000/default-product.png",
+    default: "/default-product.png",
   },
   type: { type: String, enum: ["sell", "buy", "exchange"] },
   city: { type: String, required: true },

@@ -3,7 +3,8 @@ const { ModelHandler } = require("../../Utils/Model-Handler");
 const { hashPass } = require("../../Utils/hashPass");
 const { UserModel } = require("../../models/User_model");
 const { ProductModel } = require("../../models/Product_model");
-const { validationResult } = require("express-validator");
+const { validationResult, check } = require("express-validator");
+const { CategoryModel } = require("../../models/Category_model");
 
 class AdminController {
   async createUser(req, res, next) {
@@ -134,17 +135,53 @@ class AdminController {
   async createProduct(req, res, next) {
     try {
       const result = validationResult(req);
+      if (result.errors.length > 0)
+        throw {
+          status: 400,
+          message: result.errors,
+        };
       const {
         title,
         description,
         category,
-        images,
         type,
         city,
         address,
         price,
         contact,
+        status,
       } = req.body;
+
+      let images = req.files.map((e) => {
+        if (e.fieldname == "images") return `uploads/${e.filename}`;
+      });
+
+      if (images.length == 0) images = undefined;
+
+      const checkCategory = await ModelHandler.getOne(CategoryModel, {
+        title: category,
+      });
+      if (!checkCategory)
+        throw { status: 400, message: `category "${category}" not found` };
+
+      const userID = req.user._id;
+      const product = await ProductModel.create({
+        owner: userID,
+        title,
+        description,
+        category: checkCategory._id,
+        type,
+        city,
+        address,
+        price,
+        contact,
+        status,
+        images,
+      });
+
+      if (!product) throw { status: 400, message: "cannot create product" };
+      const response = new ResponseHandler(res);
+      response.created({ data: product });
     } catch (err) {
       next(err);
     }
@@ -200,13 +237,6 @@ class AdminController {
   }
 
   async updateProduct(req, res, next) {
-    try {
-    } catch (err) {
-      next(err);
-    }
-  }
-
-  async createProduct(req, res, next) {
     try {
     } catch (err) {
       next(err);

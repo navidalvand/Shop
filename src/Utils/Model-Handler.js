@@ -14,6 +14,15 @@ class ModelHandler {
   delete(DBName , filter) {
     return DBName.deleteOne(filter)
   }
+
+ 
+  create(DBName , fields) {
+    return DBName.create(fields)
+  }
+
+  getOne(DBName , options) {
+    return DBName.findOne(options)
+  }
 }
 
 
