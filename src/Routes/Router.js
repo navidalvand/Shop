@@ -7,10 +7,16 @@ const { autoLogin } = require('../middlewares/auto_login');
 const { checkAdminRole } = require('../middlewares/admin_role');
 
 
-
+//!                               Auth Routes
 app.use("/auth" , authRoutes)
+
+//!                               API Routes
 app.use("/api" , autoLogin , APIsRouter)
+
+//!                               Admin Routes
 app.use("/admin" , autoLogin , checkAdminRole , adminsRouter)
+
+//!                               Pages Routes
 app.use("/pages" , pagesRouter)
 
 

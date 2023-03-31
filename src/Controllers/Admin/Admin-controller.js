@@ -10,18 +10,23 @@ class AdminController {
   async createUser(req, res, next) {
     try {
       const result = validationResult(req);
+      //?                Validating RequestBody Data [ username, phoneNumber, email, password ]
       if (result.errors.length > 0)
         throw {
           status: 400,
           message: result.errors,
         };
       const { username, phoneNumber, email, password } = req.body;
+
+      //?                  Check If One Of [ username, phoneNumber, email ] Are Exist
       const existUser = await ModelHandler.isItExist(UserModel, [
         { username },
         { phoneNumber },
         { email },
       ]);
       if (existUser) throw { message: "duplicate error", status: 400 };
+
+      //?                   Create User And Send Response
       const response = new ResponseHandler(res);
       const user = await UserModel.create({
         username,
@@ -30,8 +35,6 @@ class AdminController {
         password: hashPass(password),
       });
       response.created({
-        status: 201,
-        message: "user created",
         data: user,
       });
     } catch (err) {
@@ -43,14 +46,17 @@ class AdminController {
     try {
       const userID = req.params.id;
       const { username, firstName, lastName } = req.body;
+      //?                                 Update [username firstName lastName]
       const update = await UserModel.updateOne(
         { _id: userID },
         { $set: { username, firstName, lastName } }
       );
 
+      //?                            Check If Updated Or Not
       if (update.acknowledged == 0)
-        throw { status: 400, message: "cannot update" };
+        throw { status: 400, message: "user not found" };
 
+      //?                          Get New User's Data And Send Response
       const user = await ModelHandler.getByID(UserModel, userID);
       if (!user) throw { status: 404, message: "user not found" };
       const response = new ResponseHandler(res);
@@ -67,6 +73,8 @@ class AdminController {
   async getUserByID(req, res, next) {
     try {
       const userID = req.params.id;
+
+      //?                               Get User By ID
       const user = await UserModel.findById(userID);
       if (!user) throw { status: 404, message: "user not found" };
       const response = new ResponseHandler(res);
@@ -82,8 +90,10 @@ class AdminController {
   async getUsersList(req, res, next) {
     try {
       const query = req.query;
+
+      //?                               Get Users By Query
       const users = await ModelHandler.get(UserModel, query);
-      if (!users) throw { status: 404, message: "user not found" };
+      if (users.length == 0) throw { status: 404, message: "user not found" };
       const response = new ResponseHandler(res);
       response.success({
         data: users,
@@ -96,12 +106,17 @@ class AdminController {
   async deleteUser(req, res, next) {
     try {
       const userID = req.params.id;
+
+      //?                                  Check If User Exist
       const user = await ModelHandler.getByID(UserModel, userID);
       if (!user) throw { status: 404, message: "user not found" };
+
+      //?                                  Delete User And Send Response
       const deleteUser = await ModelHandler.delete(UserModel, { _id: userID });
       if (!deleteUser.acknowledged)
         throw { status: 400, message: "cannot delete user" };
       const response = new ResponseHandler(res);
+      //?                                  Send The Deleted User Response
       response.success({
         data: user,
       });
@@ -114,12 +129,19 @@ class AdminController {
     try {
       const userID = req.params.id;
       const { role } = req.body;
+      //?                          Check If Role Is Real Or Not
       if (role != "ADMIN" && role != "OWNER" && role != "USER")
         throw { status: 400, message: `role (${role}) is not defined` };
+
+      //?                        Check If User Exist Or Not
       const user = await ModelHandler.getByID(UserModel, userID);
       if (!user) throw { status: 404, message: "user not found" };
+
+      //?                          Update To New Role
       user.role = role;
       const response = new ResponseHandler(res);
+
+      //?                          Send The User With New Role Response
       response.success({
         message: "role updated",
         data: {
@@ -135,6 +157,19 @@ class AdminController {
   async createProduct(req, res, next) {
     try {
       const result = validationResult(req);
+      /**
+       *?    Validating [
+       *?      title,
+       *?      description,
+       *?      category,
+       *?      type,
+       *?      city,
+       *?      address,
+       *?      price,
+       *?      contact,
+       *?      status,
+       *?     ] Data
+       */
       if (result.errors.length > 0)
         throw {
           status: 400,
@@ -152,20 +187,24 @@ class AdminController {
         status,
       } = req.body;
 
+      //?                     Returns Files that Has The "images" Field Name
       let images = req.files.map((e) => {
         if (e.fieldname == "images") return `uploads/${e.filename}`;
       });
 
+      //?                      If Files Are Empty Product Images Will Be The Default Image
       if (images.length == 0) images = undefined;
 
+      //?                      Check If Category Is Real
       const checkCategory = await ModelHandler.getOne(CategoryModel, {
         title: category,
       });
       if (!checkCategory)
         throw { status: 400, message: `category "${category}" not found` };
 
+      //?                           Creating Product
       const userID = req.user._id;
-      const product = await ProductModel.create({
+      const product = await ModelHandler.create(ProductModel, {
         owner: userID,
         title,
         description,
@@ -178,7 +217,7 @@ class AdminController {
         status,
         images,
       });
-
+      //?                             Send Created Product Response
       if (!product) throw { status: 400, message: "cannot create product" };
       const response = new ResponseHandler(res);
       response.created({ data: product });
@@ -190,8 +229,10 @@ class AdminController {
   async getProductsList(req, res, next) {
     try {
       const query = req.query;
+      //?                              Get Products By Query
       const products = await ModelHandler.get(ProductModel, query);
-      if (!products) throw { status: 404, message: "product not found" };
+      if (products.length == 0)
+        throw { status: 404, message: "product not found" };
       const response = new ResponseHandler(res);
       response.success({
         data: products,
@@ -204,6 +245,7 @@ class AdminController {
   async getProductByID(req, res, next) {
     try {
       const productID = req.params.id;
+      //?                                Getting Product By ID
       const product = await ModelHandler.getByID(ProductModel, productID);
       if (!product) throw { status: 404, message: "product not found" };
       const response = new ResponseHandler(res);

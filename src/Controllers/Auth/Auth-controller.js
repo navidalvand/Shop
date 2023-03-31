@@ -10,19 +10,17 @@ class AuthController {
     try {
       const response = new ResponseHandler(res);
       const result = validationResult(req);
+
+      //?                           Validating RequestBody Data [ username, phoneNumber, email, password ]
       if (result.errors.length > 0)
         throw {
           status: 400,
           message: result.errors,
         };
 
-      const {
-        username,
-        phoneNumber,
-        email,
-        password,
-        role = "user",
-      } = req.body;
+      const { username, phoneNumber, email, password } = req.body;
+
+      //?                          Check If [ username, phoneNumber, email ] Are Already Exist
       let exist = await ModelHandler.isItExist(UserModel, [
         { username },
         { phoneNumber },
@@ -35,6 +33,7 @@ class AuthController {
           message: "duplicate error",
         };
 
+      //?                        Create User And Hashed Password
       let user = await UserModel.create({
         username,
         phoneNumber,
@@ -42,12 +41,13 @@ class AuthController {
         email,
       });
 
-      const token = generateToken({ username, role });
+      //?                           Generate Token By Username & Role
+      const token = generateToken({ username, role: "USER" });
 
+      //?                           Set Token In Cookies (ExpiresIn 24H later)
       response.setCookie("token", token, { maxAge: 86400000, httpOnly: true });
+
       response.created({
-        status: 201,
-        message: "created",
         data: user,
       });
     } catch (err) {
@@ -59,21 +59,25 @@ class AuthController {
     try {
       const response = new ResponseHandler(res);
       const result = validationResult(req);
+
+      //?                             Validating Request Body Data [ username, password ]
       if (result.errors.length > 0)
         throw { status: 400, message: result.errors };
       const { username, password } = req.body;
-      const isLogin = req?.cookies?.token;
-      if (isLogin) throw { status: 400, message: "you are login already" };
 
-      const user = await ModelHandler.isItExist(UserModel, [{ username }]);
+
+      //?                             Check If User Exist In DB
+      const user = await ModelHandler.getOne(UserModel, { username });
       if (!user)
         throw { status: 404, message: "username or password is wrong" };
 
-      const compare = comparePass(password, user.password);
 
+        //?                            Check Password In DB
+      const compare = comparePass(password, user.password);
       if (!compare)
         throw { status: 404, message: "username or password is wrong" };
 
+        //?                            Generate And Set New Token In Cookie
       const token = generateToken({ username, role: user.role });
       response.setCookie("token", token, { maxAge: 86400000, httpOnly: true });
       response.success({ status: 200, message: "you loged in" });
@@ -85,6 +89,7 @@ class AuthController {
   async logOut(req, res, next) {
     const response = new ResponseHandler(res);
 
+    //?                             Clear The Cookie And Send Response
     response.clearCookie("token");
     response.success({ message: "you loged out" });
   }

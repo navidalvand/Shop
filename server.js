@@ -45,6 +45,8 @@ class Application {
   }
 
   createRoutes() {
+    //*                                 Index Page
+
     app.get("/", (req, res) => {
       res.send({
         page: "home",
@@ -55,6 +57,8 @@ class Application {
   }
 
   errorHandeler() {
+
+    //!                              404 Page
     app.use((req, res) => {
       res.status(404).json({
         status: 404,
@@ -62,6 +66,8 @@ class Application {
       });
     });
 
+
+    //!                             Send Errors
     app.use((err, req, res, next) => {
       const status = err?.status || 500;
       const message = err?.message || "enternal server error";
