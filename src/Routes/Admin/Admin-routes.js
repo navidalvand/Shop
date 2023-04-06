@@ -69,10 +69,6 @@ router.patch("/update-product/:id", upload.array("images", 12) , AdminController
 
 
 //!                                                       
-router.post("/create-product", AdminController.createProduct);
-
-
-//!                                                       
 router.post("/create-category", AdminController.createCategory);
 
 
