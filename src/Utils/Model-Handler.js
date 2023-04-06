@@ -4,30 +4,33 @@ class ModelHandler {
   }
 
   get(DBName, options) {
-    return DBName.find(options)
+    return DBName.find(options);
   }
 
-  getByID (DBName , ID) {
-    return DBName.findById(ID)
+  getByID(DBName, ID) {
+    return DBName.findById(ID);
   }
 
-  delete(DBName , filter) {
-    return DBName.deleteOne(filter)
+  delete(DBName, filter) {
+    return DBName.deleteOne(filter);
   }
 
- 
-  create(DBName , fields) {
-    return DBName.create(fields)
+  create(DBName, fields) {
+    return DBName.create(fields);
   }
 
-  getOne(DBName , options) {
-    return DBName.findOne(options)
+  getOne(DBName, options) {
+    return DBName.findOne(options);
+  }
+
+  updateOne(DBName, condition , options) {
+    return DBName.updateOne(
+       condition ,
+      { $set: options }
+    );
   }
 }
 
-
-
-
 module.exports = {
-  ModelHandler : new ModelHandler(),
+  ModelHandler: new ModelHandler(),
 };

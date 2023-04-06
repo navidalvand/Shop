@@ -47,9 +47,10 @@ class AdminController {
       const userID = req.params.id;
       const { username, firstName, lastName } = req.body;
       //?                                 Update [username firstName lastName]
-      const update = await UserModel.updateOne(
+      const update = await ModelHandler.updateOne(
+        UserModel,
         { _id: userID },
-        { $set: { username, firstName, lastName } }
+        { username, firstName, lastName }
       );
 
       //?                            Check If Updated Or Not
@@ -139,6 +140,7 @@ class AdminController {
 
       //?                          Update To New Role
       user.role = role;
+      user.save();
       const response = new ResponseHandler(res);
 
       //?                          Send The User With New Role Response
@@ -259,6 +261,21 @@ class AdminController {
 
   async acceptProduct(req, res, next) {
     try {
+      const productID = req.params.id;
+
+      const product = await ModelHandler.getByID(ProductModel, productID);
+
+      if (!product) throw { status: 404, message: "product not found" };
+
+      if (product.status === "accepted")
+        throw { status: 400, message: "the product already accepted" };
+
+      product.status = "accepted";
+      product.save();
+
+      const response = new ResponseHandler(res);
+
+      response.success({ data: product, message: "accepted" });
     } catch (err) {
       next(err);
     }
@@ -266,6 +283,21 @@ class AdminController {
 
   async rejectProduct(req, res, next) {
     try {
+      const productID = req.params.id;
+
+      const product = await ModelHandler.getByID(ProductModel, productID);
+
+      if (!product) throw { status: 404, message: "product not found" };
+
+      if (product.status === "rejected")
+        throw { status: 400, message: "the product already rejected" };
+
+      product.status = "rejected";
+      product.save();
+
+      const response = new ResponseHandler(res);
+
+      response.success({ data: product, message: "rejected" });
     } catch (err) {
       next(err);
     }
@@ -273,6 +305,17 @@ class AdminController {
 
   async deleteProduct(req, res, next) {
     try {
+      const productID = req.params.id;
+
+      const product = await ModelHandler.delete(ProductModel, {
+        _id: productID,
+      });
+
+      if (!product.deletedCount)
+        throw { status: 404, message: "the product not found" };
+
+      const response = new ResponseHandler(res);
+      response.success({ data: product, message: "deleted" });
     } catch (err) {
       next(err);
     }
@@ -280,6 +323,59 @@ class AdminController {
 
   async updateProduct(req, res, next) {
     try {
+      const productID = req.params.id;
+
+      const product = await ModelHandler.getByID(ProductModel, productID);
+
+      if (!product) throw { status: 404, message: "the product not found" };
+
+      const {
+        title,
+        description,
+        category,
+        type,
+        city,
+        address,
+        price,
+        contact,
+      } = req.body;
+
+      const images = req.files.map((e) => {
+        if (e.fieldname == "images") return `uploads/${e.filename}`;
+      });
+
+      if (images.length == 0) images = undefined;
+
+      if (category) {
+        const checkCategory = await ModelHandler.getOne(CategoryModel, {
+          title: category,
+        });
+        if (!checkCategory)
+          throw { status: 400, message: `category "${category}" not found` };
+      }
+
+      const updateProduct = await ModelHandler.updateOne(
+        ProductModel,
+        { _id: productID },
+        {
+          title,
+          description,
+          category,
+          type,
+          city,
+          address,
+          price,
+          contact,
+          images,
+        }
+      );
+
+
+      const result = await ModelHandler.getByID(ProductModel , productID)
+
+      const response = new ResponseHandler(res);
+
+      response.success({data : result , message : "updated"});
     } catch (err) {
       next(err);
     }

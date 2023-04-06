@@ -52,20 +52,20 @@ router.get("/all-products", AdminController.getProductsList);
 router.get("/product/:id", AdminController.getProductByID);
 
 
-//!                                                       
+//!                                                       Accept Product By ID In Panel Admin "Route"
 router.get("/accept-product/:id", AdminController.acceptProduct);
 
 
-//!                                                       
-router.delete("/reject-product/:id", AdminController.rejectProduct);
+//!                                                        Reject Product By ID In Panel Admin "Route"
+router.get("/reject-product/:id", AdminController.rejectProduct);
 
 
-//!                                                       
-router.delete("/delete-product", AdminController.deleteProduct);
+//!                                                        Delete Product By ID In Panel Admin "Route"
+router.delete("/delete-product/:id", checkOwnerRole , AdminController.deleteProduct);
 
 
-//!                                                       
-router.patch("/update-product", AdminController.updateProduct);
+//!                                                        Update Product By ID In Panel Admin "Route"
+router.patch("/update-product/:id", upload.array("images", 12) , AdminController.updateProduct);
 
 
 //!                                                       

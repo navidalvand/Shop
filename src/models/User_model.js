@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
   profileImage: {
     type: String,
     reuired : true,
-    default: "/default-user.jpg",
+    default: "http://localhost:3000/default-user.jpg",
   },
   role: { type: String, enum: ["ADMIN", "OWNER", "USER"], default: "USER" },
 });
