@@ -6,6 +6,9 @@ const { ProductModel } = require("../../models/Product_model");
 const { validationResult, check } = require("express-validator");
 const { CategoryModel } = require("../../models/Category_model");
 
+
+
+
 class AdminController {
   async createUser(req, res, next) {
     try {
