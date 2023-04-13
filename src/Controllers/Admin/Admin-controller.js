@@ -5,9 +5,7 @@ const { UserModel } = require("../../models/User_model");
 const { ProductModel } = require("../../models/Product_model");
 const { validationResult, check } = require("express-validator");
 const { CategoryModel } = require("../../models/Category_model");
-
-
-
+const { CommentModel } = require("../../models/Comment_model");
 
 class AdminController {
   async createUser(req, res, next) {
@@ -343,7 +341,7 @@ class AdminController {
         contact,
       } = req.body;
 
-      const images = req.files.map((e) => {
+      let images = req.files.map((e) => {
         if (e.fieldname == "images") return `uploads/${e.filename}`;
       });
 
@@ -373,12 +371,11 @@ class AdminController {
         }
       );
 
-
-      const result = await ModelHandler.getByID(ProductModel , productID)
+      const result = await ModelHandler.getByID(ProductModel, productID);
 
       const response = new ResponseHandler(res);
 
-      response.success({data : result , message : "updated"});
+      response.success({ data: result, message: "updated" });
     } catch (err) {
       next(err);
     }
@@ -386,6 +383,14 @@ class AdminController {
 
   async createCategory(req, res, next) {
     try {
+      const { title } = req.body;
+      if (!title.trim())
+        throw { status: 400, message: "title cannot be empty" };
+      const category = await ModelHandler.create(CategoryModel, {
+        title: title.trim(),
+      });
+      const response = new ResponseHandler(res);
+      response.created({ data: category });
     } catch (err) {
       next(err);
     }
@@ -393,6 +398,14 @@ class AdminController {
 
   async deleteCategory(req, res, next) {
     try {
+      const ID = req.params.id;
+      const findCategory = await ModelHandler.delete(CategoryModel, {
+        _id: ID,
+      });
+      if (findCategory.deletedCount === 0)
+        throw { status: 404, message: "category not found" };
+      const response = new ResponseHandler(res);
+      response.success({ data: findCategory });
     } catch (err) {
       next(err);
     }
@@ -400,6 +413,21 @@ class AdminController {
 
   async updateCategory(req, res, next) {
     try {
+      const ID = req.params.id;
+      const { title } = req.body;
+      if (!title?.trim())
+        throw { status: 400, message: "title is not a valid title" };
+      const updateCategory = await ModelHandler.updateOne(
+        CategoryModel,
+        { _id: ID },
+        { title: title.trim() }
+      );
+
+      if (updateCategory.modifiedCount === 0)
+        throw { status: 400, message: "cannot update the category title" };
+
+      const reponse = new ResponseHandler(res);
+      reponse.success({ data: updateCategory });
     } catch (err) {
       next(err);
     }
@@ -407,6 +435,10 @@ class AdminController {
 
   async getCategoriesList(req, res, next) {
     try {
+      const query = req.query;
+      const findCategory = await ModelHandler.get(CategoryModel, query);
+      const response = new ResponseHandler(res);
+      response.success({ data: findCategory });
     } catch (err) {
       next(err);
     }
@@ -414,6 +446,23 @@ class AdminController {
 
   async createComment(req, res, next) {
     try {
+      const productID = req.params.id;
+      const userID = req.user._id;
+      const { text } = req.body;
+      if (!text.trim()) throw { status: 400, message: "text cannot be empty" };
+
+      const findProduct = await ModelHandler.getByID(ProductModel, productID);
+      if (!findProduct) throw { status: 404, message: "product not found" };
+      const createComment = await ModelHandler.create(CommentModel, {
+        author: userID,
+        text: text.trim(),
+        product: productID,
+      });
+
+      const response = new ResponseHandler(res);
+      response.success({
+        data: createComment,
+      });
     } catch (err) {
       next(err);
     }
@@ -421,6 +470,17 @@ class AdminController {
 
   async deleteComment(req, res, next) {
     try {
+      const commentID = req.params.id;
+
+      const deleteComment = await ModelHandler.delete(CommentModel, {
+        _id: commentID,
+      });
+
+      if (deleteComment.deletedCount === 0)
+        throw { status: 404, message: "comment not found" };
+
+      const response = new ResponseHandler(res);
+      response.success({ data: deleteComment });
     } catch (err) {
       next(err);
     }

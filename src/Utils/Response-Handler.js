@@ -22,7 +22,7 @@ class ResponseHandler {
   success(data) {
     this.res.status(200).json({
       status: data?.status || 200,
-      message: data?.message || "Success",
+      message: data?.message || "OK",
       data: data?.data || null,
     });
   }

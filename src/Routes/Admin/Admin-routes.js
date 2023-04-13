@@ -73,11 +73,11 @@ router.post("/create-category", AdminController.createCategory);
 
 
 //!                                                       
-router.delete("/delete-category", AdminController.deleteCategory);
+router.delete("/delete-category/:id", AdminController.deleteCategory);
 
 
 //!                                                       
-router.patch("/update-category", AdminController.updateCategory);
+router.patch("/update-category/:id", AdminController.updateCategory);
 
 
 //!                                                       
@@ -85,11 +85,11 @@ router.get("/all-categories", AdminController.getCategoriesList);
 
 
 //!                                                       
-router.post("/create-comment", AdminController.createComment);
+router.post("/create-comment/:id", AdminController.createComment);
 
 
 //!                                                       
-router.delete("/delete-comment", AdminController.deleteComment);
+router.delete("/delete-comment/:id", AdminController.deleteComment);
 
 
 //!                                                       
