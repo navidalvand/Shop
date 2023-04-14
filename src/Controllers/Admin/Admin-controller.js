@@ -6,6 +6,7 @@ const { ProductModel } = require("../../models/Product_model");
 const { validationResult, check } = require("express-validator");
 const { CategoryModel } = require("../../models/Category_model");
 const { CommentModel } = require("../../models/Comment_model");
+const { SliderModel } = require("../../models/Slider_model");
 
 class AdminController {
   async createUser(req, res, next) {
@@ -437,7 +438,8 @@ class AdminController {
     try {
       const query = req.query;
       const findCategory = await ModelHandler.get(CategoryModel, query);
-      if(findCategory.length === 0) throw {status : 404 , message : "category not found"}
+      if (findCategory.length === 0)
+        throw { status: 404, message: "category not found" };
       const response = new ResponseHandler(res);
       response.success({ data: findCategory });
     } catch (err) {
@@ -489,11 +491,12 @@ class AdminController {
 
   async getCommentsList(req, res, next) {
     try {
-      const query = req.query
-      const findComments = await ModelHandler.get(CommentModel , query)
-      if(findComments.length === 0) throw {status : 404 , message : "comment not found"}
-      const response = new ResponseHandler(res)
-      response.success({data : findComments})
+      const query = req.query;
+      const findComments = await ModelHandler.get(CommentModel, query);
+      if (findComments.length === 0)
+        throw { status: 404, message: "comment not found" };
+      const response = new ResponseHandler(res);
+      response.success({ data: findComments });
     } catch (err) {
       next(err);
     }
@@ -501,6 +504,30 @@ class AdminController {
 
   async createSlider(req, res, next) {
     try {
+      const result = validationResult(req);
+      if (result.errors.length > 0)
+        throw {
+          status: 400,
+          message: result.errors,
+        };
+      const { title, type } = req.body;
+      const validTypes = ["Footer", "Main", "Header"];
+      if (!validTypes.includes(type))
+        throw { status: 400, message: `type "${type}" is not a valid type`};
+
+      let image = req.file;
+      if (!image) throw { status: 400, message: "image cannot be empty" };
+      image = `/uploads/${image.filename}`
+      console.log(image);
+
+      const createSlider = await ModelHandler.create(SliderModel , {
+        title,
+        type,
+        image
+      })
+
+      const response = new ResponseHandler(res)
+      response.created({data : createSlider})
     } catch (err) {
       next(err);
     }
