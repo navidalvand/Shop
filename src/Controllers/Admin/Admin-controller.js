@@ -437,6 +437,7 @@ class AdminController {
     try {
       const query = req.query;
       const findCategory = await ModelHandler.get(CategoryModel, query);
+      if(findCategory.length === 0) throw {status : 404 , message : "category not found"}
       const response = new ResponseHandler(res);
       response.success({ data: findCategory });
     } catch (err) {
@@ -488,6 +489,11 @@ class AdminController {
 
   async getCommentsList(req, res, next) {
     try {
+      const query = req.query
+      const findComments = await ModelHandler.get(CommentModel , query)
+      if(findComments.length === 0) throw {status : 404 , message : "comment not found"}
+      const response = new ResponseHandler(res)
+      response.success({data : findComments})
     } catch (err) {
       next(err);
     }
