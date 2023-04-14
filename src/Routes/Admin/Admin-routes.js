@@ -68,31 +68,31 @@ router.delete("/delete-product/:id", checkOwnerRole , AdminController.deleteProd
 router.patch("/update-product/:id", upload.array("images", 12) , AdminController.updateProduct);
 
 
-//!                                                       
+//!                                                       Create Category In Panel Admin "Route"
 router.post("/create-category", AdminController.createCategory);
 
 
-//!                                                       
+//!                                                       Delete Category By ID In Panel Admin "Route"
 router.delete("/delete-category/:id", AdminController.deleteCategory);
 
 
-//!                                                       
+//!                                                       Update Category By ID In Panel Admin "Route"
 router.patch("/update-category/:id", AdminController.updateCategory);
 
 
-//!                                                       
+//!                                                       Get All Categories In Panel Admin "Route"
 router.get("/all-categories", AdminController.getCategoriesList);
 
 
-//!                                                       
+//!                                                       Create Comment Under Product In Panel Admin "Route"
 router.post("/create-comment/:id", AdminController.createComment);
 
 
-//!                                                       
+//!                                                       Delete Comment Under Product By ID In Panel Admin "Route"
 router.delete("/delete-comment/:id", AdminController.deleteComment);
 
 
-//!                                                       
+//!                                                       Get All Comments In Panel Admin "Route"
 router.get("/all-comments", AdminController.getCommentsList);
 
 
