@@ -513,34 +513,43 @@ class AdminController {
       const { title, type } = req.body;
       const validTypes = ["Footer", "Main", "Header"];
       if (!validTypes.includes(type))
-        throw { status: 400, message: `type "${type}" is not a valid type`};
+        throw { status: 400, message: `type "${type}" is not a valid type` };
 
       let image = req.file;
       if (!image) throw { status: 400, message: "image cannot be empty" };
-      image = `/uploads/${image.filename}`
+      image = `/uploads/${image.filename}`;
       console.log(image);
 
-      const createSlider = await ModelHandler.create(SliderModel , {
+      const createSlider = await ModelHandler.create(SliderModel, {
         title,
         type,
-        image
-      })
+        image,
+      });
 
-      const response = new ResponseHandler(res)
-      response.created({data : createSlider})
-    } catch (err) {
-      next(err);
-    }
-  }
-
-  async updateSlider(req, res, next) {
-    try {
+      const response = new ResponseHandler(res);
+      response.created({ data: createSlider });
     } catch (err) {
       next(err);
     }
   }
 
   async deleteSlider(req, res, next) {
+    try {
+      const sliderID = req.params.id;
+
+      const deleteSlider = await ModelHandler.delete(SliderModel, {
+        _id: sliderID,
+      });
+      if (deleteSlider.deletedCount === 0)
+        throw { status: 400, message: `slider with "${sliderID}" not found` };
+      const response = new ResponseHandler(res);
+      response.success({ data: deleteSlider });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async updateSlider(req, res, next) {
     try {
     } catch (err) {
       next(err);

@@ -94,10 +94,15 @@ router.post(
 );
 
 //!
-router.delete("/delete-slider", AdminController.deleteSlider);
+router.delete("/delete-slider/:id", AdminController.deleteSlider);
 
 //!
-router.patch("/update-slider", AdminController.updateSlider);
+router.patch(
+  "/update-slider",
+  upload.single("image"),
+  createSliderValidation(),
+  AdminController.updateSlider
+);
 
 //!
 router.get("/all-sliders", AdminController.getSlidersList);
