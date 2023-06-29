@@ -16,8 +16,8 @@ class Application {
     this.configApp();
     this.startApp();
     this.connectToDB();
-    this.setupSwagger();
     this.createRoutes();
+    this.setupSwagger();
     this.errorHandeler();
   }
 
