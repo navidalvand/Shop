@@ -5,6 +5,8 @@ const http = require("http");
 const path = require("path");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
+const swaggerUI = require("swagger-ui-express");
+const swaggerJsDoc = require("swagger-jsdoc");
 
 const { mainRoutes } = require("./src/Routes/Router");
 const { setController } = require("./src/Controllers/Controller");
@@ -14,6 +16,7 @@ class Application {
     this.configApp();
     this.startApp();
     this.connectToDB();
+    this.setupSwagger();
     this.createRoutes();
     this.errorHandeler();
   }
@@ -43,6 +46,30 @@ class Application {
       .catch((err) => {
         console.log(err);
       });
+  }
+
+  setupSwagger() {
+    app.use(
+      "/api-doc",
+      swaggerUI.serve,
+      swaggerUI.setup(
+        swaggerJsDoc({
+          swaggerDefinition: {
+            info: {
+              title: "online shop",
+              version: "2.0.0",
+              description: "nevid's shop",
+            },
+            servers: [
+              {
+                url: "http://localhost:3000",
+              },
+            ],
+          },
+          apis: ["./src/Swagger/*/*.js"],
+        })
+      )
+    );
   }
 
   createRoutes() {
