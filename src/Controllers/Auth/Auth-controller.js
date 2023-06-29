@@ -4,8 +4,9 @@ const { validationResult } = require("express-validator");
 const { hashPass, comparePass } = require("../../Utils/hashPass");
 const { generateToken } = require("../../Utils/token");
 const { ResponseHandler } = require("../../Utils/Response-Handler");
+const { Controller } = require("../Controller");
 
-class AuthController {
+class AuthController extends Controller {
   async singUp(req, res, next) {
     try {
       const response = new ResponseHandler(res);
