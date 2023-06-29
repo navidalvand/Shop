@@ -1,6 +1,7 @@
 const { validationResult } = require("express-validator");
 const { Controller } = require("../Controller");
 const { ModelHandler } = require("../../Utils/Model-Handler");
+const { hashPass } = require("../../Utils/hashPass");
 
 class UserAdminController extends Controller {
   async createUser(req, res, next) {
@@ -55,8 +56,7 @@ class UserAdminController extends Controller {
       //?                          Get New User's Data And Send Response
       const user = await ModelHandler.getByID(UserModel, userID);
       if (!user) throw { status: 404, message: "user not found" };
-      const response = new ResponseHandler(res);
-      response.success({
+      this.success({
         status: 200,
         message: "updated",
         data: user,
@@ -73,8 +73,7 @@ class UserAdminController extends Controller {
       //?                               Get User By ID
       const user = await UserModel.findById(userID);
       if (!user) throw { status: 404, message: "user not found" };
-      const response = new ResponseHandler(res);
-      response.success({
+      this.success({
         message: "user",
         data: user,
       });
@@ -90,8 +89,7 @@ class UserAdminController extends Controller {
       //?                               Get Users By Query
       const users = await ModelHandler.get(UserModel, query);
       if (users.length == 0) throw { status: 404, message: "user not found" };
-      const response = new ResponseHandler(res);
-      response.success({
+      this.success({
         data: users,
       });
     } catch (err) {
@@ -111,9 +109,8 @@ class UserAdminController extends Controller {
       const deleteUser = await ModelHandler.delete(UserModel, { _id: userID });
       if (!deleteUser.acknowledged)
         throw { status: 400, message: "cannot delete user" };
-      const response = new ResponseHandler(res);
       //?                                  Send The Deleted User Response
-      response.success({
+      this.success({
         data: user,
       });
     } catch (err) {
@@ -136,10 +133,9 @@ class UserAdminController extends Controller {
       //?                          Update To New Role
       user.role = role;
       user.save();
-      const response = new ResponseHandler(res);
 
       //?                          Send The User With New Role Response
-      response.success({
+      this.success({
         message: "role updated",
         data: {
           user,
