@@ -1,6 +1,7 @@
-class ResponseHandler {
-  constructor(res) {
+class Controller {
+  constructor(req, res) {
     this.res = res;
+    this.req = req;
   }
 
   //!                         Send A Test Response
@@ -37,6 +38,11 @@ class ResponseHandler {
   }
 }
 
+function setController(req, res) {
+  new Controller(req, res);
+}
+
 module.exports = {
-  ResponseHandler,
+  Controller,
+  setController,
 };

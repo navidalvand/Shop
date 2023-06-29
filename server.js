@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 
 const { mainRoutes } = require("./src/Routes/Router");
+const { setController } = require("./src/Controllers/Controller");
 
 class Application {
   constructor() {
@@ -46,6 +47,10 @@ class Application {
 
   createRoutes() {
     //*                                 Index Page
+    app.use((req, res, next) => {
+      setController(req,res)
+      next();
+    });
 
     app.get("/", (req, res) => {
       res.send({
@@ -57,7 +62,6 @@ class Application {
   }
 
   errorHandeler() {
-
     //!                              404 Page
     app.use((req, res) => {
       res.status(404).json({
@@ -65,7 +69,6 @@ class Application {
         massage: "page not found",
       });
     });
-
 
     //!                             Send Errors
     app.use((err, req, res, next) => {
