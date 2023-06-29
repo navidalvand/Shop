@@ -1,4 +1,6 @@
+const { validationResult } = require("express-validator");
 const { Controller } = require("../Controller");
+const {ModelHandler} = require("../../Utils/Model-Handler");
 
 class ProductAdminController extends Controller {
     
@@ -68,8 +70,7 @@ class ProductAdminController extends Controller {
           });
           //?                             Send Created Product Response
           if (!product) throw { status: 400, message: "cannot create product" };
-          const response = new ResponseHandler(res);
-          response.created({ data: product });
+          this.created({ data: product });
         } catch (err) {
           next(err);
         }
@@ -83,8 +84,7 @@ class ProductAdminController extends Controller {
           const products = await ModelHandler.get(ProductModel, query);
           if (products.length == 0)
             throw { status: 404, message: "product not found" };
-          const response = new ResponseHandler(res);
-          response.success({
+          this.success({
             data: products,
           });
         } catch (err) {
@@ -100,8 +100,7 @@ class ProductAdminController extends Controller {
           //?                                Getting Product By ID
           const product = await ModelHandler.getByID(ProductModel, productID);
           if (!product) throw { status: 404, message: "product not found" };
-          const response = new ResponseHandler(res);
-          response.success({
+          this.success({
             data: product,
           });
         } catch (err) {
@@ -124,9 +123,8 @@ class ProductAdminController extends Controller {
       product.status = "accepted";
       product.save();
 
-      const response = new ResponseHandler(res);
 
-      response.success({ data: product, message: "accepted" });
+      this.success({ data: product, message: "accepted" });
     } catch (err) {
       next(err);
     }
@@ -148,9 +146,8 @@ class ProductAdminController extends Controller {
       product.status = "rejected";
       product.save();
 
-      const response = new ResponseHandler(res);
 
-      response.success({ data: product, message: "rejected" });
+      this.success({ data: product, message: "rejected" });
     } catch (err) {
       next(err);
     }
@@ -167,8 +164,7 @@ class ProductAdminController extends Controller {
       if (!product.deletedCount)
         throw { status: 404, message: "the product not found" };
 
-      const response = new ResponseHandler(res);
-      response.success({ data: product, message: "deleted" });
+      this.success({ data: product, message: "deleted" });
     } catch (err) {
       next(err);
     }
@@ -226,9 +222,8 @@ class ProductAdminController extends Controller {
 
       const result = await ModelHandler.getByID(ProductModel, productID);
 
-      const response = new ResponseHandler(res);
 
-      response.success({ data: result, message: "updated" });
+      this.success({ data: result, message: "updated" });
     } catch (err) {
       next(err);
     }
