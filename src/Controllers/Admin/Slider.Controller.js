@@ -1,6 +1,7 @@
 const { validationResult } = require("express-validator");
 const { Controller } = require("../Controller");
 const { ModelHandler } = require("../../Utils/Model-Handler");
+const { SliderModel } = require("../../models/Slider_model");
 
 class SliderAdminController extends Controller {
   async createSlider(req, res, next) {

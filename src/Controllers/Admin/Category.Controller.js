@@ -1,4 +1,5 @@
 const {ModelHandler} = require("../../Utils/Model-Handler");
+const { CategoryModel } = require("../../models/Category_model");
 const { Controller } = require("../Controller");
 
 class CategoryAdminController extends Controller {

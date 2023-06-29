@@ -2,6 +2,7 @@ const { validationResult } = require("express-validator");
 const { Controller } = require("../Controller");
 const { ModelHandler } = require("../../Utils/Model-Handler");
 const { hashPass } = require("../../Utils/hashPass");
+const { UserModel } = require("../../models/User_model");
 
 class UserAdminController extends Controller {
   async createUser(req, res, next) {

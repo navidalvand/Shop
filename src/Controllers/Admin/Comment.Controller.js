@@ -1,4 +1,5 @@
 const { ModelHandler } = require("../../Utils/Model-Handler");
+const { CommentModel } = require("../../models/Comment_model");
 const { Controller } = require("../Controller");
 
 class CommentAdminController extends Controller {
