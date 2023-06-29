@@ -1,8 +1,8 @@
+const { validationResult } = require("express-validator");
 const { Controller } = require("../Controller");
+const { ModelHandler } = require("../../Utils/Model-Handler");
 
 class SliderAdminController extends Controller {
-    
-    
   async createSlider(req, res, next) {
     try {
       const result = validationResult(req);
@@ -27,13 +27,11 @@ class SliderAdminController extends Controller {
         image,
       });
 
-      const response = new ResponseHandler(res);
-      response.created({ data: createSlider });
+      this.created({ data: createSlider });
     } catch (err) {
       next(err);
     }
   }
-
 
   async deleteSlider(req, res, next) {
     try {
@@ -44,28 +42,23 @@ class SliderAdminController extends Controller {
       });
       if (deleteSlider.deletedCount === 0)
         throw { status: 400, message: `slider with "${sliderID}" not found` };
-      const response = new ResponseHandler(res);
-      response.success({ data: deleteSlider });
+      this.success({ data: deleteSlider });
     } catch (err) {
       next(err);
     }
   }
-
 
   async updateSlider(req, res, next) {
     try {
-      const id = req.params.id
+      const id = req.params.id;
 
-      const checkExist = await ModelHandler.getByID(SliderModel , id)
+      const checkExist = await ModelHandler.getByID(SliderModel, id);
 
-      if(!checkExist) throw {status : 404 , message : "slider not found"}
-
-
+      if (!checkExist) throw { status: 404, message: "slider not found" };
     } catch (err) {
       next(err);
     }
   }
-
 
   async getSlidersList(req, res, next) {
     try {
@@ -73,16 +66,8 @@ class SliderAdminController extends Controller {
       next(err);
     }
   }
-
-
-
-
-
-
-
 }
-
 
 module.exports = {
-    SliderAdminController : new SliderAdminController()
-}
+  SliderAdminController: new SliderAdminController(),
+};
