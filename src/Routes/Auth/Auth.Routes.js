@@ -25,5 +25,5 @@ router.post("/logout" , autoLogin , AuthController.logOut)
 
 
 module.exports = {
-    authRoutes : router
+    AuthRoutes : router
 }

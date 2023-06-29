@@ -47,15 +47,16 @@ class Application {
 
   createRoutes() {
     //*                                 Index Page
-    app.use((req, res, next) => {
-      setController(req,res)
-      next();
-    });
 
     app.get("/", (req, res) => {
       res.send({
         page: "home",
       });
+    });
+
+    app.use((req, res, next) => {
+      setController(req, res);
+      next();
     });
 
     app.use(mainRoutes);

@@ -1,9 +1,9 @@
+const router = require("express").Router();
 const {
   UserAdminController,
 } = require("../../Controllers/Admin/User.Controller");
 const { checkOwnerRole } = require("../../middlewares/owner_role");
 const { registerValidation } = require("../../validation/auth-validation");
-const router = require("express").Router();
 
 //!                                                       Create User In Panel Admin "Route"
 router.post("/create", registerValidation(), UserAdminController.createUser);
