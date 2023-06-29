@@ -1,6 +1,6 @@
-const { commentRoutes } = require('./Comment-routes')
-const { productRoutes } = require('./Product-routes')
-const { userRoutes } = require('./User-routes')
+const { commentRoutes } = require('./Comment.Routes')
+const { productRoutes } = require('./Product.Routes')
+const { userRoutes } = require('./User.Routes')
 
 const app = require('express').Router()
 
