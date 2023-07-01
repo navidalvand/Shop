@@ -8,7 +8,7 @@ const { Controller } = require("../Controller");
 class AuthController extends Controller {
   async singUp(req, res, next) {
     try {
-      this.test("test message")
+      this.test(res, "test message")
       const result = validationResult(req);
 
       //?                           Validating RequestBody Data [ username, phoneNumber, email, password ]

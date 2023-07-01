@@ -7,9 +7,8 @@ const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
-
 const { mainRoutes } = require("./src/Routes/Router");
-const { setController } = require("./src/Controllers/Controller");
+
 
 class Application {
   constructor() {
@@ -73,17 +72,10 @@ class Application {
   }
 
   createRoutes() {
-    //*                                 Index Page
-
     app.get("/", (req, res) => {
       res.send({
         page: "home",
       });
-    });
-
-    app.use((req, res, next) => {
-      setController(req, res);
-      next();
     });
 
     app.use(mainRoutes);

@@ -1,48 +1,34 @@
 class Controller {
-  constructor(req, res) {
-    this.res = res;
-    this.req = req;
+  test(res, value) {
+    res.send({ value });
   }
 
-  //!                         Send A Test Response
-  test(value) {
-    this.res.send(value);
+  setCookie(res, { cookieName, cookieValue, options = {} }) {
+    res.cookie(cookieName, cookieValue, options);
   }
 
-  //!                         Set Cookie
-  setCookie(cookieName, cookieValue, options = {}) {
-    this.res.cookie(cookieName, cookieValue, options);
+  clearCookie(res, cookieName) {
+    res.clearCookie(cookieName);
   }
 
-  //!                         Clear Cookie
-  clearCookie(cookieName) {
-    this.res.clearCookie(cookieName);
-  }
-
-  //!                         Send A Success Response
-  success(data) {
-    this.res.status(200).json({
-      status: data?.status || 200,
-      message: data?.message || "OK",
-      data: data?.data || null,
+  success(res, { status = 200, message = "OK", data = null }) {
+    res.status(200).json({
+      status,
+      message,
+      data,
     });
   }
 
-  //!                         Send A Created Data Response
-  created(data) {
-    this.res.status(201).json({
-      status: data?.status || 201,
-      message: data?.message || "Created",
-      data: data?.data || null,
+  created(res, { status = 201, message = "Created", data = null }) {
+    res.status(201).json({
+      status,
+      message,
+      data,
     });
   }
 }
 
-function setController(req, res) {
-  new Controller(req, res);
-}
 
 module.exports = {
   Controller,
-  setController,
 };
