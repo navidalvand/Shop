@@ -17,3 +17,25 @@
  *         400:
  *           description: Bad Request
  */
+
+
+/**
+ * @swagger
+ *  paths:
+ *   /admin/categories/delete/{id}:
+ *     delete:
+ *       summary: Delete Category
+ *       tags: [Admin , Admin-Categories]
+ *       description: Delete Category From Admin Panel
+ *       parameters:
+ *        - in: path
+ *          name: id
+ *          required: true
+ *          description: The Category ID
+ *       responses:
+ *         200:
+ *           description: OK
+ *         400:
+ *           description: Bad Request
+ */
+
