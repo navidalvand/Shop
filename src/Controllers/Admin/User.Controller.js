@@ -31,7 +31,7 @@ class UserAdminController extends Controller {
         email,
         password: hashPass(password),
       });
-      this.created({
+      super.created(res, {
         data: user,
       });
     } catch (err) {
@@ -51,16 +51,13 @@ class UserAdminController extends Controller {
       );
 
       //?                            Check If Updated Or Not
-      if (update.acknowledged == 0)
+      if (update.matchedCount == 0)
         throw { status: 400, message: "user not found" };
 
-      //?                          Get New User's Data And Send Response
-      const user = await ModelHandler.getByID(UserModel, userID);
-      if (!user) throw { status: 404, message: "user not found" };
-      this.success({
+      super.success(res, {
         status: 200,
         message: "updated",
-        data: user,
+        data: update,
       });
     } catch (err) {
       next(err);
@@ -74,7 +71,7 @@ class UserAdminController extends Controller {
       //?                               Get User By ID
       const user = await UserModel.findById(userID);
       if (!user) throw { status: 404, message: "user not found" };
-      this.success({
+      super.success(res, {
         message: "user",
         data: user,
       });
@@ -90,7 +87,7 @@ class UserAdminController extends Controller {
       //?                               Get Users By Query
       const users = await ModelHandler.get(UserModel, query);
       if (users.length == 0) throw { status: 404, message: "user not found" };
-      this.success({
+      super.success(res, {
         data: users,
       });
     } catch (err) {
@@ -111,7 +108,7 @@ class UserAdminController extends Controller {
       if (!deleteUser.acknowledged)
         throw { status: 400, message: "cannot delete user" };
       //?                                  Send The Deleted User Response
-      this.success({
+      super.success(res, {
         data: user,
       });
     } catch (err) {
@@ -136,7 +133,7 @@ class UserAdminController extends Controller {
       user.save();
 
       //?                          Send The User With New Role Response
-      this.success({
+      super.success(res, {
         message: "role updated",
         data: {
           user,

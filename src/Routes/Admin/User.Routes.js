@@ -9,20 +9,20 @@ const { registerValidation } = require("../../validation/auth-validation");
 router.post("/create", registerValidation(), UserAdminController.createUser);
 
 //!                                                       Update User By ID In Panel Admin "Route"
-router.patch("/update-user/:id", UserAdminController.updateUser);
+router.patch("/update/:id", UserAdminController.updateUser);
 
 //!                                                       Get User By ID In Panel Admin "Route"
-router.get("/user/:id", UserAdminController.getUserByID);
+router.get("/:id", UserAdminController.getUserByID);
 
 //!                                                       Get All Users In Panel Admin "Route"
-router.get("/all-users", UserAdminController.getUsersList);
+router.get("/all", UserAdminController.getUsersList);
 
 //!                                                       Delete User By ID In Panel Admin "Route"
-router.delete("/delete-user/:id", UserAdminController.deleteUser);
+router.delete("/delete/:id", UserAdminController.deleteUser);
 
 //!                                                      Update User's Role By ID In Panel Admin "Route"
 router.patch(
-  "/role-update/:id",
+  "/change-role/:id",
   checkOwnerRole,
   UserAdminController.changeUserRole
 );

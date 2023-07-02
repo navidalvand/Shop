@@ -8,6 +8,7 @@ const cookieParser = require("cookie-parser");
 const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
 const { mainRoutes } = require("./src/Routes/Router");
+const { pathes } = require("./src/Swagger/Path.Swagger");
 
 
 class Application {
@@ -65,7 +66,7 @@ class Application {
               },
             ],
           },
-          apis: ["./src/Swagger/*/*.js"],
+          apis: pathes,
         })
       )
     );
