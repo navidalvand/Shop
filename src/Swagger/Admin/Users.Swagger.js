@@ -116,3 +116,24 @@
  *         400:
  *           description: Bad Request
  */
+
+
+/**
+ * @swagger
+ *  paths:
+ *   /admin/users/delete/{id}:
+ *     delete:
+ *       summary: Delete Account
+ *       tags: [Admin , Admin-Users]
+ *       description: delete User From Admin Panel
+ *       parameters:
+ *        - in: path
+ *          name: id
+ *          required: true
+ *          description: User ID
+ *       responses:
+ *         200:
+ *           description: OK
+ *         400:
+ *           description: Bad Request
+ */
