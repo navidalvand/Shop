@@ -137,3 +137,28 @@
  *         400:
  *           description: Bad Request
  */
+
+/**
+ * @swagger
+ *  paths:
+ *   /admin/users/change-role/{id}:
+ *     patch:
+ *       summary: Update Account Access Role
+ *       tags: [Admin , Admin-Users]
+ *       description: Change User Role From Admin Panel
+ *       parameters:
+ *        - in: path
+ *          name: id
+ *          required: true
+ *          description: User ID
+ *        - in: formData
+ *          name: role
+ *          required: true
+ *          description: User Role
+ *          enum: [OWNER, DEV , ADMIN , USER]
+ *       responses:
+ *         200:
+ *           description: OK
+ *         400:
+ *           description: Bad Request
+ */

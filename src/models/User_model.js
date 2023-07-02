@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
     reuired : true,
     default: "http://localhost:3000/default-user.jpg",
   },
-  role: { type: String, enum: ["ADMIN", "OWNER", "USER"], default: "USER" },
+  role: { type: String, enum: ["ADMIN", "OWNER", "USER", "DEV"], default: "USER" },
 });
 
 const UserModel = mongoose.model("users", userSchema);

@@ -121,7 +121,7 @@ class UserAdminController extends Controller {
       const userID = req.params.id;
       const { role } = req.body;
       //?                          Check If Role Is Real Or Not
-      if (role != "ADMIN" && role != "OWNER" && role != "USER")
+      if (role != "ADMIN" && role != "OWNER" && role != "USER" && role != "DEV")
         throw { status: 400, message: `role (${role}) is not defined` };
 
       //?                        Check If User Exist Or Not
