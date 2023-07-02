@@ -8,7 +8,6 @@ const { Controller } = require("../Controller");
 class AuthController extends Controller {
   async singUp(req, res, next) {
     try {
-      this.test(res, "test message")
       const result = validationResult(req);
 
       //?                           Validating RequestBody Data [ username, phoneNumber, email, password ]
@@ -45,11 +44,13 @@ class AuthController extends Controller {
       const token = generateToken({ username, role: "USER" });
 
       //?                           Set Token In Cookies (ExpiresIn 24H later)
-      this.setCookie("token", token, { maxAge: 86400000, httpOnly: true });
-
-      this.created({
-        data: user,
+      super.setCookie(res, {
+        cookieName: "token",
+        cookieValue: token,
+        options: { maxAge: 86400000, httpOnly: true },
       });
+
+      super.created(res, user);
     } catch (err) {
       next(err);
     }
