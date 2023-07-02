@@ -1,4 +1,4 @@
-const {ModelHandler} = require("../../Utils/Model-Handler");
+const { ModelHandler } = require("../../Utils/Model-Handler");
 const { CategoryModel } = require("../../models/Category_model");
 const { Controller } = require("../Controller");
 
@@ -11,7 +11,7 @@ class CategoryAdminController extends Controller {
       const category = await ModelHandler.create(CategoryModel, {
         title: title.trim(),
       });
-      this.created({ data: category });
+      super.created(res, { data: category });
     } catch (err) {
       next(err);
     }
@@ -25,7 +25,7 @@ class CategoryAdminController extends Controller {
       });
       if (findCategory.deletedCount === 0)
         throw { status: 404, message: "category not found" };
-      this.success({ data: findCategory });
+      super.success(res, { data: findCategory });
     } catch (err) {
       next(err);
     }
@@ -46,7 +46,7 @@ class CategoryAdminController extends Controller {
       if (updateCategory.modifiedCount === 0)
         throw { status: 400, message: "cannot update the category title" };
 
-      this.success({ data: updateCategory });
+      super.success(res, { data: updateCategory });
     } catch (err) {
       next(err);
     }
@@ -58,7 +58,7 @@ class CategoryAdminController extends Controller {
       const findCategory = await ModelHandler.get(CategoryModel, query);
       if (findCategory.length === 0)
         throw { status: 404, message: "category not found" };
-      this.success({ data: findCategory });
+      super.success(res, { data: findCategory });
     } catch (err) {
       next(err);
     }
