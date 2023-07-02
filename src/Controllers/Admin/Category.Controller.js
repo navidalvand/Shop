@@ -43,7 +43,7 @@ class CategoryAdminController extends Controller {
         { title: title.trim() }
       );
 
-      if (updateCategory.modifiedCount === 0)
+      if (updateCategory.matchedCount === 0)
         throw { status: 400, message: "cannot update the category title" };
 
       super.success(res, { data: updateCategory });

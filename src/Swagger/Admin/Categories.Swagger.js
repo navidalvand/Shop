@@ -39,3 +39,28 @@
  *           description: Bad Request
  */
 
+
+/**
+ * @swagger
+ *  paths:
+ *   /admin/categories/update/{id}:
+ *     patch:
+ *       summary: Update Category
+ *       tags: [Admin , Admin-Categories]
+ *       description: Update Category From Admin Panel
+ *       parameters:
+ *        - in: path
+ *          name: id
+ *          required: true
+ *          description: The Category ID
+ *        - in: formData
+ *          name: title
+ *          required: true
+ *          description: The Category Title
+ *       responses:
+ *         200:
+ *           description: OK
+ *         400:
+ *           description: Bad Request
+ */
+
