@@ -73,3 +73,19 @@
  *         400:
  *           description: Bad Request
  */
+
+
+/**
+ * @swagger
+ *  paths:
+ *   /auth/logout:
+ *     post:
+ *       summary: Logout Account
+ *       tags: [Auth]
+ *       description: Logout From An Existed Account
+ *       responses:
+ *         200:
+ *           description: Logged Out
+ *         400:
+ *           description: Bad Request
+ */
