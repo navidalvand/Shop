@@ -50,7 +50,7 @@ class AuthController extends Controller {
         options: { maxAge: 86400000, httpOnly: true },
       });
 
-      super.created(res, user);
+      super.created(res, { data: user });
     } catch (err) {
       next(err);
     }
@@ -77,8 +77,12 @@ class AuthController extends Controller {
 
       //?                            Generate And Set New Token In Cookie
       const token = generateToken({ username, role: user.role });
-      this.setCookie("token", token, { maxAge: 86400000, httpOnly: true });
-      this.success({ status: 200, message: "you loged in" });
+      super.setCookie(res, {
+        cookieName: "token",
+        cookieValue: token,
+        options: { maxAge: 86400000, httpOnly: true },
+      });
+      super.success(res, { status: 200, message: "you loged in" });
     } catch (err) {
       next(err);
     }
@@ -86,8 +90,8 @@ class AuthController extends Controller {
 
   async logOut(req, res, next) {
     //?                             Clear The Cookie And Send Response
-    this.clearCookie("token");
-    this.success({ message: "you loged out" });
+    super.clearCookie(res, { cookieName: "token" });
+    super.success(res, { message: "you loged out" });
   }
 }
 

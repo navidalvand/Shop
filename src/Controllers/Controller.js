@@ -1,14 +1,16 @@
 class Controller {
   test(res, message) {
-    console.log("object");
-    this.res.status(200).json({ message });
+    res.status(200).json({ message });
   }
 
   setCookie(res, { cookieName, cookieValue, options = {} }) {
+    if (!cookieName || !cookieValue)
+      throw { status: 500, message: "cookieName or cookieValue is empty" };
     res.cookie(cookieName, cookieValue, options);
   }
 
   clearCookie(res, { cookieName }) {
+    if (!cookieName) throw { status: 500, message: "cookieName is empty" };
     res.clearCookie(cookieName);
   }
 
