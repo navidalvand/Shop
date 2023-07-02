@@ -11,9 +11,6 @@ router.post("/create", registerValidation(), UserAdminController.createUser);
 //!                                                       Update User By ID In Panel Admin "Route"
 router.patch("/update/:id", UserAdminController.updateUser);
 
-//!                                                       Get User By ID In Panel Admin "Route"
-router.get("/:id", UserAdminController.getUserByID);
-
 //!                                                       Get All Users In Panel Admin "Route"
 router.get("/all", UserAdminController.getUsersList);
 
@@ -27,6 +24,8 @@ router.patch(
   UserAdminController.changeUserRole
 );
 
+//!                                                       Get User By ID In Panel Admin "Route"
+router.get("/:id", UserAdminController.getUserByID);
 module.exports = {
   UserRoutes: router,
 };

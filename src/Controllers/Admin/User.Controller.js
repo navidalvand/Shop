@@ -83,7 +83,7 @@ class UserAdminController extends Controller {
   async getUsersList(req, res, next) {
     try {
       const query = req.query;
-
+      console.log(query);
       //?                               Get Users By Query
       const users = await ModelHandler.get(UserModel, query);
       if (users.length == 0) throw { status: 404, message: "user not found" };

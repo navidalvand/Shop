@@ -87,13 +87,29 @@
  *     get:
  *       summary: Get Account
  *       tags: [Admin , Admin-Users]
- *       description: Update User From Admin Panel
+ *       description: Get User From Admin Panel
  *       parameters:
  *         - in: path
  *           name: id
  *           type: string
  *           description: Enter The User ID
  *           required : true
+ *       responses:
+ *         200:
+ *           description: OK
+ *         400:
+ *           description: Bad Request
+ */
+
+
+/**
+ * @swagger
+ *  paths:
+ *   /admin/users/all:
+ *     get:
+ *       summary: Get All Accounts
+ *       tags: [Admin , Admin-Users]
+ *       description: Get All Users From Admin Panel
  *       responses:
  *         200:
  *           description: OK
