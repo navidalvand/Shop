@@ -18,7 +18,6 @@
  *           description: Bad Request
  */
 
-
 /**
  * @swagger
  *  paths:
@@ -38,7 +37,6 @@
  *         400:
  *           description: Bad Request
  */
-
 
 /**
  * @swagger
@@ -64,3 +62,17 @@
  *           description: Bad Request
  */
 
+/**
+ * @swagger
+ *  paths:
+ *   /admin/categories/all:
+ *     get:
+ *       summary: Get ALl Categories
+ *       tags: [Admin , Admin-Categories]
+ *       description: Get All Categories From Admin Panel
+ *       responses:
+ *         200:
+ *           description: OK
+ *         400:
+ *           description: Bad Request
+ */
