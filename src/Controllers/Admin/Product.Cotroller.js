@@ -80,7 +80,7 @@ class ProductAdminController extends Controller {
       const products = await ModelHandler.get(ProductModel, query);
       if (products.length == 0)
         throw { status: 404, message: "product not found" };
-      super.success({
+      super.success(res ,{
         data: products,
       });
     } catch (err) {

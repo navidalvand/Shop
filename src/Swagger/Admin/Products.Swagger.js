@@ -49,10 +49,26 @@
  *          required: true
  *          type: string
  *        - in: formData
+ *          description: You Can Upload More Than Only One Image But Its not Possible From Swagger :)
  *          name: images
  *          maximum: 12
  *          required: true
  *          type: file
+ *       responses:
+ *         200:
+ *           description: OK
+ *         400:
+ *           description: Bad Request
+ */
+
+/**
+ * @swagger
+ *  paths:
+ *   /admin/products/all:
+ *     get:
+ *       summary: Get All Products
+ *       tags: [Admin , Admin-Products]
+ *       description: Gett All Products From Admin Panel
  *       responses:
  *         200:
  *           description: OK

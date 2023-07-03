@@ -14,32 +14,30 @@ router.post(
 );
 
 //!                                                       Get All Products In Panel Admin "Route"
-router.get("/all-products", ProductAdminController.getProductsList);
+router.get("/all", ProductAdminController.getProductsList);
 
 //!                                                       Get Product By ID In Panel Admin "Route"
-router.get("/product/:id", ProductAdminController.getProductByID);
+router.get("/:id", ProductAdminController.getProductByID);
 
 //!                                                       Accept Product By ID In Panel Admin "Route"
-router.get("/accept-product/:id", ProductAdminController.acceptProduct);
+router.get("/accept/:id", ProductAdminController.acceptProduct);
 
 //!                                                        Reject Product By ID In Panel Admin "Route"
-router.get("/reject-product/:id", ProductAdminController.rejectProduct);
+router.get("/reject/:id", ProductAdminController.rejectProduct);
 
 //!                                                        Delete Product By ID In Panel Admin "Route"
 router.delete(
-  "/delete-product/:id",
+  "/delete/:id",
   checkOwnerRole,
   ProductAdminController.deleteProduct
 );
 
 //!                                                        Update Product By ID In Panel Admin "Route"
 router.patch(
-  "/update-product/:id",
+  "/update/:id",
   upload.array("images", 12),
   ProductAdminController.updateProduct
 );
-
-
 
 
 module.exports = {
