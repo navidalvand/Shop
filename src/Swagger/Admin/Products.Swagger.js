@@ -113,3 +113,43 @@
  *         400:
  *           description: Bad Request
  */
+
+
+/**
+ * @swagger
+ *  paths:
+ *   /admin/products/update/{id}:
+ *     patch:
+ *       summary: Update A Product By ID
+ *       tags: [Admin , Admin-Products]
+ *       description: Update A Product By ID From Admin Panel
+ *       parameters: 
+ *        - in: path
+ *          name: id
+ *          required: true
+ *        - in: formData
+ *          name: title
+ *        - in: formData
+ *          name: description
+ *        - in: formData
+ *          name: category
+ *        - in: formData
+ *          name: type
+ *        - in: formData
+ *          name: city
+ *        - in: formData
+ *          name: address
+ *        - in: formData
+ *          name: price
+ *        - in: formData
+ *          name: contact
+ *        - in: formData
+ *          name: images
+ *          type : file
+ *          description: You Can Upload More Than Only One Image But Its Not Possible In Swagger :)
+ *       responses:
+ *         200:
+ *           description: OK
+ *         400:
+ *           description: Bad Request
+ */

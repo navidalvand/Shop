@@ -67,7 +67,7 @@ class ProductAdminController extends Controller {
       });
       //?                             Send Created Product Response
       if (!product) throw { status: 400, message: "cannot create product" };
-      super.created(res ,{ data: product });
+      super.created(res, { data: product });
     } catch (err) {
       next(err);
     }
@@ -80,7 +80,7 @@ class ProductAdminController extends Controller {
       const products = await ModelHandler.get(ProductModel, query);
       if (products.length == 0)
         throw { status: 404, message: "product not found" };
-      super.success(res ,{
+      super.success(res, {
         data: products,
       });
     } catch (err) {
@@ -94,7 +94,7 @@ class ProductAdminController extends Controller {
       //?                                Getting Product By ID
       const product = await ModelHandler.getByID(ProductModel, productID);
       if (!product) throw { status: 404, message: "product not found" };
-      super.success(res ,{
+      super.success(res, {
         data: product,
       });
     } catch (err) {
@@ -116,7 +116,7 @@ class ProductAdminController extends Controller {
       product.status = "accepted";
       product.save();
 
-      super.success({ data: product, message: "accepted" });
+      super.success(res, { data: product, message: "accepted" });
     } catch (err) {
       next(err);
     }
@@ -136,7 +136,7 @@ class ProductAdminController extends Controller {
       product.status = "rejected";
       product.save();
 
-      super.success({ data: product, message: "rejected" });
+      super.success(res, { data: product, message: "rejected" });
     } catch (err) {
       next(err);
     }
@@ -178,11 +178,14 @@ class ProductAdminController extends Controller {
         contact,
       } = req.body;
 
-      let images = req.files.map((e) => {
-        if (e.fieldname == "images") return `uploads/${e.filename}`;
-      });
-
-      if (images.length == 0) images = undefined;
+      let images;
+      if (req?.files) {
+        images = req?.files?.map((e) => {
+          if (e.fieldname == "images") return `uploads/${e.filename}`;
+        });
+      } else {
+        images = undefined;
+      }
 
       if (category) {
         const checkCategory = await ModelHandler.getOne(CategoryModel, {
@@ -208,9 +211,7 @@ class ProductAdminController extends Controller {
         }
       );
 
-      const result = await ModelHandler.getByID(ProductModel, productID);
-
-      super.success(res, { data: result, message: "updated" });
+      super.success(res, { data: updateProduct, message: "updated" });
     } catch (err) {
       next(err);
     }
