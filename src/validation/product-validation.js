@@ -11,7 +11,7 @@ function productvalidation() {
     body("description")
       .notEmpty()
       .isString()
-      .isLength({ min: 0, max: 500 })
+      .isLength({ min: 6, max: 500 })
       .withMessage("description is not valid"),
     body("category").notEmpty().isString().withMessage("category is not valid"),
     body("type")
@@ -29,7 +29,7 @@ function productvalidation() {
       .notEmpty()
       .isString()
       .trim()
-      .isLength({ min: 0, max: 200 })
+      .isLength({ min: 6, max: 200 })
       .withMessage("address is not valid"),
     body("price")
       .notEmpty()
@@ -39,18 +39,8 @@ function productvalidation() {
     body("contact")
       .notEmpty()
       .isString()
-      .isLength({ min: 0, max: 200 })
+      .isLength({ min: 6, max: 200 })
       .withMessage("contact is not valid"),
-    body("status")
-      .notEmpty()
-      .isString()
-      .trim()
-      .custom((value) => {
-        if (value != "accepted" && value != "waiting" && value != "rejected")
-          throw { status: 400, massage: "status is not valid" };
-        return true;
-      })
-      .withMessage("status is not valid"),
   ];
 }
 
