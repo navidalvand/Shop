@@ -94,3 +94,22 @@
  *         400:
  *           description: Bad Request
  */
+
+/**
+ * @swagger
+ *  paths:
+ *   /admin/products/delete/{id}:
+ *     delete:
+ *       summary: Delete A Product By ID
+ *       tags: [Admin , Admin-Products]
+ *       description: Delete A Product By ID From Admin Panel
+ *       parameters: 
+ *        - in: path
+ *          name: id
+ *          required: true
+ *       responses:
+ *         200:
+ *           description: OK
+ *         400:
+ *           description: Bad Request
+ */

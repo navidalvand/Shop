@@ -153,7 +153,7 @@ class ProductAdminController extends Controller {
       if (!product.deletedCount)
         throw { status: 404, message: "the product not found" };
 
-      super.success({ data: product, message: "deleted" });
+      super.success(res, { data: product, message: "deleted" });
     } catch (err) {
       next(err);
     }
@@ -210,7 +210,7 @@ class ProductAdminController extends Controller {
 
       const result = await ModelHandler.getByID(ProductModel, productID);
 
-      super.success({ data: result, message: "updated" });
+      super.success(res, { data: result, message: "updated" });
     } catch (err) {
       next(err);
     }
