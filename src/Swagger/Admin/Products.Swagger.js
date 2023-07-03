@@ -114,7 +114,6 @@
  *           description: Bad Request
  */
 
-
 /**
  * @swagger
  *  paths:
@@ -147,6 +146,46 @@
  *          name: images
  *          type : file
  *          description: You Can Upload More Than Only One Image But Its Not Possible In Swagger :)
+ *       responses:
+ *         200:
+ *           description: OK
+ *         400:
+ *           description: Bad Request
+ */
+
+
+/**
+ * @swagger
+ *  paths:
+ *   /admin/products/accept/{id}:
+ *     get:
+ *       summary: Accept A Product By ID
+ *       tags: [Admin , Admin-Products]
+ *       description: Accept A Product By ID From Admin Panel
+ *       parameters: 
+ *        - in: path
+ *          name: id
+ *          required: true
+ *       responses:
+ *         200:
+ *           description: OK
+ *         400:
+ *           description: Bad Request
+ */
+
+
+/**
+ * @swagger
+ *  paths:
+ *   /admin/products/reject/{id}:
+ *     get:
+ *       summary: Reject A Product By ID
+ *       tags: [Admin , Admin-Products]
+ *       description: Reject A Product By ID From Admin Panel
+ *       parameters: 
+ *        - in: path
+ *          name: id
+ *          required: true
  *       responses:
  *         200:
  *           description: OK
