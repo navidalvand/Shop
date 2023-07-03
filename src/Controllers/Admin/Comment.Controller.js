@@ -1,5 +1,6 @@
 const { ModelHandler } = require("../../Utils/Model-Handler");
 const { CommentModel } = require("../../models/Comment_model");
+const { ProductModel } = require("../../models/Product_model");
 const { Controller } = require("../Controller");
 
 class CommentAdminController extends Controller {
@@ -18,7 +19,7 @@ class CommentAdminController extends Controller {
         product: productID,
       });
 
-      this.success({
+      super.success(res, {
         data: createComment,
       });
     } catch (err) {
@@ -37,7 +38,7 @@ class CommentAdminController extends Controller {
       if (deleteComment.deletedCount === 0)
         throw { status: 404, message: "comment not found" };
 
-      this.success({ data: deleteComment });
+      super.success(res, { data: deleteComment });
     } catch (err) {
       next(err);
     }
@@ -49,7 +50,7 @@ class CommentAdminController extends Controller {
       const findComments = await ModelHandler.get(CommentModel, query);
       if (findComments.length === 0)
         throw { status: 404, message: "comment not found" };
-      this.success({ data: findComments });
+      super.success(res, { data: findComments });
     } catch (err) {
       next(err);
     }
