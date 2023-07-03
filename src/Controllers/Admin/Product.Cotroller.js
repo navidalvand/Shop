@@ -94,7 +94,7 @@ class ProductAdminController extends Controller {
       //?                                Getting Product By ID
       const product = await ModelHandler.getByID(ProductModel, productID);
       if (!product) throw { status: 404, message: "product not found" };
-      super.success({
+      super.success(res ,{
         data: product,
       });
     } catch (err) {

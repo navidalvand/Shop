@@ -68,7 +68,26 @@
  *     get:
  *       summary: Get All Products
  *       tags: [Admin , Admin-Products]
- *       description: Gett All Products From Admin Panel
+ *       description: Get All Products From Admin Panel
+ *       responses:
+ *         200:
+ *           description: OK
+ *         400:
+ *           description: Bad Request
+ */
+
+/**
+ * @swagger
+ *  paths:
+ *   /admin/products/{id}:
+ *     get:
+ *       summary: Get A Product By ID
+ *       tags: [Admin , Admin-Products]
+ *       description: Get A Product By ID From Admin Panel
+ *       parameters: 
+ *        - in: path
+ *          name: id
+ *          required: true
  *       responses:
  *         200:
  *           description: OK

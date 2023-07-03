@@ -1,9 +1,10 @@
-const { ProductAdminController } = require("../../Controllers/Admin/Product.cotroller");
+const {
+  ProductAdminController,
+} = require("../../Controllers/Admin/Product.cotroller");
 const { upload } = require("../../Utils/multer");
 const { checkOwnerRole } = require("../../middlewares/owner_role");
 const { productvalidation } = require("../../validation/product-validation");
 const router = require("express").Router();
-
 
 //!                                                       Create Product In Panel Admin "Route"
 router.post(
@@ -15,9 +16,6 @@ router.post(
 
 //!                                                       Get All Products In Panel Admin "Route"
 router.get("/all", ProductAdminController.getProductsList);
-
-//!                                                       Get Product By ID In Panel Admin "Route"
-router.get("/:id", ProductAdminController.getProductByID);
 
 //!                                                       Accept Product By ID In Panel Admin "Route"
 router.get("/accept/:id", ProductAdminController.acceptProduct);
@@ -39,6 +37,8 @@ router.patch(
   ProductAdminController.updateProduct
 );
 
+//!                                                       Get Product By ID In Panel Admin "Route"
+router.get("/:id", ProductAdminController.getProductByID);
 
 module.exports = {
   ProductRoutes: router,
