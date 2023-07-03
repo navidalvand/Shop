@@ -21,3 +21,23 @@
  *         400:
  *           description: Bad Request
  */
+
+/**
+ * @swagger
+ *  paths:
+ *   /admin/comments/delete/{id}:
+ *     delete:
+ *       summary: Delete Comment Under Product
+ *       tags: [Admin , Admin-Comments]
+ *       description: Delete Comment Uder Product By Comment ID From Admin Panel
+ *       parameters: 
+ *        - in: path
+ *          name: id
+ *          required: true
+ *          description: Comment ID
+ *       responses:
+ *         200:
+ *           description: OK
+ *         400:
+ *           description: Bad Request
+ */
