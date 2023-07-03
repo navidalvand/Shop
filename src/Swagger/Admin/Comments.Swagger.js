@@ -41,3 +41,18 @@
  *         400:
  *           description: Bad Request
  */
+
+/**
+ * @swagger
+ *  paths:
+ *   /admin/comments/all:
+ *     get:
+ *       summary: Get All Comments
+ *       tags: [Admin , Admin-Comments]
+ *       description: Get All Comments From Admin Panel
+ *       responses:
+ *         200:
+ *           description: OK
+ *         400:
+ *           description: Bad Request
+ */
