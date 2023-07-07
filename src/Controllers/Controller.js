@@ -1,4 +1,13 @@
+let instance;
+
 class Controller {
+  constructor(req, res) {
+    if (instance) {
+      throw new Error("You can only create one instance!");
+    }
+    this.counter = counter;
+    instance = this;
+  }
   test(res, message) {
     res.status(200).json({ message });
   }
@@ -31,6 +40,12 @@ class Controller {
   }
 }
 
+const controller = function setupResponseController(req, res) {
+  return new Controller(req, res);
+};
+
+Object.freeze(controller);
+
 module.exports = {
-  Controller,
+  controller,
 };
