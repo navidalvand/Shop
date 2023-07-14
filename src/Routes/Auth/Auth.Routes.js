@@ -4,7 +4,7 @@ const {
   registerValidation,
   loginValidation,
 } = require("../../validation/auth-validation");
-const { AuthController } = require("../../Controllers/Auth/Auth-controller");
+const { AuthController } = require("../../Controllers/Auth/Auth.Controller");
 
 //!                                                                         Register Controller
 router.post("/register", registerValidation(), AuthController.singUp);
