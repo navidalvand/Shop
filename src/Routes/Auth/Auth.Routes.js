@@ -10,7 +10,7 @@ const { AuthController } = require("../../Controllers/Auth/Auth.Controller");
 router.post("/register", registerValidation(), AuthController.singUp);
 
 //!                                                                         Login Controller
-router.post("/login", loginValidation(), AuthController.logIn);
+router.post("/login", loginValidation(), AuthController.logIn );
 
 //!                                                                         Logout Controller
 router.post("/logout", autoLogin, AuthController.logOut);

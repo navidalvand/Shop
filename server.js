@@ -9,7 +9,9 @@ const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
 const { mainRoutes } = require("./src/Routes/Router");
 const { pathes } = require("./src/Swagger/Path.Swagger");
-
+const {
+  ResponseHandler,
+} = require("./src/Services/Responses/Response.Service");
 
 class Application {
   constructor() {
@@ -18,7 +20,6 @@ class Application {
     this.connectToDB();
     this.createRoutes();
     this.setupSwagger();
-    this.errorHandeler();
   }
 
   configApp() {
@@ -80,25 +81,8 @@ class Application {
     });
 
     app.use(mainRoutes);
-  }
-
-  errorHandeler() {
-    //!                              404 Page
-    app.use((req, res) => {
-      res.status(404).json({
-        status: 404,
-        massage: "page not found",
-      });
-    });
-
-    //!                             Send Errors
-    app.use((err, req, res, next) => {
-      const status = err?.status || 500;
-      const message = err?.message || "enternal server error";
-      return res.status(status).json({
-        status,
-        message,
-      });
+    app.use((data, req, res, next) => {
+      ResponseHandler.run(data, req, res, next);
     });
   }
 }

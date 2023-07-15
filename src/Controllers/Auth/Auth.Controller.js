@@ -3,9 +3,9 @@ const { ModelHandler } = require("../../Utils/Model-Handler");
 const { validationResult } = require("express-validator");
 const { hashPass, comparePass } = require("../../Utils/hashPass");
 const { generateToken } = require("../../Utils/token");
-const { Controller } = require("../Controller");
+const { ValidResponseAcions } = require("../../Utils/Response.ValidActions");
 
-class AuthController extends Controller {
+class AuthController {
   async singUp(req, res, next) {
     try {
       const result = validationResult(req);
@@ -13,7 +13,8 @@ class AuthController extends Controller {
       //?                           Validating RequestBody Data [ username, phoneNumber, email, password ]
       if (result.errors.length > 0)
         throw {
-          status: 400,
+          action: ValidResponseAcions.BADREQUEST,
+          statusCode: 400,
           message: result.errors,
         };
 
@@ -28,7 +29,8 @@ class AuthController extends Controller {
 
       if (exist)
         throw {
-          status: 400,
+          action: ValidResponseAcions.BADREQUEST,
+          statusCode: 400,
           message: "duplicate error",
         };
 
@@ -44,15 +46,27 @@ class AuthController extends Controller {
       const token = generateToken({ username, role: "USER" });
 
       //?                           Set Token In Cookies (ExpiresIn 24H later)
-      super.setCookie(res, {
-        cookieName: "token",
-        cookieValue: token,
-        options: { maxAge: 86400000, httpOnly: true },
+      next({
+        action: ValidResponseAcions.SETCOOCKIE,
+        data: {
+          data: user,
+          message: "you loged in",
+          options: {
+            cookieName: "token",
+            cookieValue: token,
+            coockieOptions: { maxAge: 86400000, httpOnly: true },
+          },
+        },
       });
-
-      super.created(res, { data: user });
     } catch (err) {
-      next(err);
+      next({
+        action: err.action || ValidResponseAcions.ERROR,
+        data: {
+          message: err.message,
+          statusCode: err.statusCode,
+          data: err.data,
+        },
+      });
     }
   }
 
@@ -62,36 +76,62 @@ class AuthController extends Controller {
 
       //?                             Validating Request Body Data [ username, password ]
       if (result.errors.length > 0)
-        throw { status: 400, message: result.errors };
+        throw {
+          statusCode: 400,
+          action: ValidResponseAcions.BADREQUEST,
+          message: result.errors,
+        };
       const { username, password } = req.body;
 
       //?                             Check If User Exist In DB
       const user = await ModelHandler.getOne(UserModel, { username });
       if (!user)
-        throw { status: 404, message: "username or password is wrong" };
+        throw {
+          statusCode: 401,
+          action: ValidResponseAcions.UNAUTHORIZED,
+          message: "username or password is wrong",
+        };
 
       //?                            Check Password In DB
       const compare = comparePass(password, user.password);
       if (!compare)
-        throw { status: 404, message: "username or password is wrong" };
+        throw {
+          statusCode: 401,
+          action: ValidResponseAcions.UNAUTHORIZED,
+          message: "username or password is wrong",
+        };
 
       //?                            Generate And Set New Token In Cookie
       const token = generateToken({ username, role: user.role });
-      super.setCookie(res, {
-        cookieName: "token",
-        cookieValue: token,
-        options: { maxAge: 86400000, httpOnly: true },
+
+      next({
+        action: ValidResponseAcions.SETCOOCKIE,
+        data: {
+          message: "you loged in",
+          options: {
+            cookieName: "token",
+            cookieValue: token,
+            coockieOptions: { maxAge: 86400000, httpOnly: true },
+          },
+        },
       });
-      super.success(res, { status: 200, message: "you loged in" });
     } catch (err) {
-      next(err);
+      next({
+        action: `${err.action || ValidResponseAcions.ERROR}`,
+        data: {
+          message: err.message,
+          statusCode: err.statusCode,
+          data: err.data,
+        },
+      });
     }
   }
 
   async logOut(req, res, next) {
-    //?                             Clear The Cookie And Send Response
-    super.clearCookie(res, { cookieName: "token" });
-    super.success(res, { message: "you loged out" });
+    try {
+      //?                             Clear The Cookie And Send Response
+      next({ action: "clearCoockie" });
+    } catch (err) {}
   }
 }
 
