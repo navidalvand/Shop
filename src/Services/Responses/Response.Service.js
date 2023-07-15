@@ -1,7 +1,7 @@
 class ResponseHandler {
   #res;
   run(
-    { action, data: { statusCode, message, data, options } },
+    { action, dataObj: { statusCode, message, data, options } },
     req,
     resObj,
     next
@@ -12,8 +12,8 @@ class ResponseHandler {
         this.#create({ data, message, statusCode });
         break;
 
-      case "SETCOOCKIE":
-        this.#setCoockie({ message, statusCode, data, options });
+      case "SETCOOKIE":
+        this.#setcookie({ message, statusCode, data, options });
         break;
 
       case "SUCCESS":
@@ -43,6 +43,10 @@ class ResponseHandler {
       case "ERROR":
         this.#error({ data, message, statusCode });
         break;
+
+      case "CLEARCOOKIE":
+        this.#clearCookie({ cookieName: data.cookieName });
+        break;
       default:
         console.log(
           new Error(
@@ -69,15 +73,15 @@ class ResponseHandler {
     });
   }
 
-  #setCoockie({
+  #setcookie({
     statusCode = 200,
     message = "OK",
     data = null,
-    options: { cookieName = "", cookieValue = "", coockieOptions = {} } = {},
+    options: { cookieName = "", cookieValue = "", cookieOptions = {} } = {},
   }) {
     this.#res
       .status(statusCode)
-      .cookie(cookieName, cookieValue, coockieOptions)
+      .cookie(cookieName, cookieValue, cookieOptions)
       .json({
         statusCode,
         message,
@@ -119,6 +123,19 @@ class ResponseHandler {
 
   #badRequest({ statusCode = 400, message = "Bad Reques", data = null }) {
     this.#res.status(statusCode).json({
+      statusCode,
+      message,
+      data,
+    });
+  }
+
+  #clearCookie({
+    statusCode = 200,
+    message = "OK",
+    data = null,
+    cookieName = "",
+  }) {
+    this.#res.clearCookie(cookieName).status(statusCode).json({
       statusCode,
       message,
       data,

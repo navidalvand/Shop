@@ -1,6 +1,6 @@
 const ValidResponseAcions = {
   CREATED: "CREATED",
-  SETCOOCKIE: "SETCOOCKIE",
+  SETCOOKIE: "SETCOOKIE",
   SUCCESS: "SUCCESS",
   UNAUTHORIZED: "UNAUTHORIZED",
   NOTFOUND: "NOTFOUND",
@@ -8,6 +8,7 @@ const ValidResponseAcions = {
   FORBIDDEN: "FORBIDDEN",
   BADREQUEST: "BADREQUEST",
   ERROR: "ERROR",
+  CLEARCOOKIE: "CLEARCOOKIE",
 };
 module.exports = {
   ValidResponseAcions,

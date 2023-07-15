@@ -47,21 +47,21 @@ class AuthController {
 
       //?                           Set Token In Cookies (ExpiresIn 24H later)
       next({
-        action: ValidResponseAcions.SETCOOCKIE,
-        data: {
+        action: ValidResponseAcions.SETCOOKIE,
+        dataObj: {
           data: user,
           message: "you loged in",
           options: {
             cookieName: "token",
             cookieValue: token,
-            coockieOptions: { maxAge: 86400000, httpOnly: true },
+            cookieOptions: { maxAge: 86400000, httpOnly: true },
           },
         },
       });
     } catch (err) {
       next({
         action: err.action || ValidResponseAcions.ERROR,
-        data: {
+        dataObj: {
           message: err.message,
           statusCode: err.statusCode,
           data: err.data,
@@ -105,20 +105,20 @@ class AuthController {
       const token = generateToken({ username, role: user.role });
 
       next({
-        action: ValidResponseAcions.SETCOOCKIE,
-        data: {
+        action: ValidResponseAcions.SETCOOKIE,
+        dataObj: {
           message: "you loged in",
           options: {
             cookieName: "token",
             cookieValue: token,
-            coockieOptions: { maxAge: 86400000, httpOnly: true },
+            cookieOptions: { maxAge: 86400000, httpOnly: true },
           },
         },
       });
     } catch (err) {
       next({
         action: `${err.action || ValidResponseAcions.ERROR}`,
-        data: {
+        dataObj: {
           message: err.message,
           statusCode: err.statusCode,
           data: err.data,
@@ -130,8 +130,20 @@ class AuthController {
   async logOut(req, res, next) {
     try {
       //?                             Clear The Cookie And Send Response
-      next({ action: "clearCoockie" });
-    } catch (err) {}
+      next({
+        action: ValidResponseAcions.CLEARCOOKIE,
+        dataObj: { data: { cookieName: "token" } },
+      });
+    } catch (err) {
+      next({
+        action: err.action || ValidResponseAcions.ERROR,
+        dataObj: {
+          message: err.message,
+          statusCode: err.statusCode,
+          data: err.data,
+        },
+      });
+    }
   }
 }
 
