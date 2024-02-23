@@ -88,3 +88,4 @@ class Application {
 }
 
 new Application();
+

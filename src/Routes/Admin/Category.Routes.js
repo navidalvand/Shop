@@ -1,4 +1,4 @@
-const { CategoryAdminController } = require("../../Controllers/Admin/Category.controller");
+const { CategoryAdminController } = require("../../Controllers/Admin/Category.Controller");
 
 const router = require("express").Router();
 
