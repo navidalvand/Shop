@@ -1,6 +1,5 @@
-const {
-  ProductAdminController,
-} = require("../../Controllers/Admin/Product.cotroller");
+
+const { ProductAdminController } = require("../../Controllers/Admin/Product.Cotroller");
 const { upload } = require("../../Utils/multer");
 const { checkOwnerRole } = require("../../middlewares/owner_role");
 const { productvalidation } = require("../../validation/product-validation");
