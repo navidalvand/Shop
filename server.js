@@ -33,9 +33,10 @@ class Application {
 
   startApp() {
     let server = http.createServer(app);
-    server.listen(3000, (err) => {
+    const port = process.env.PORT
+    server.listen(port, (err) => {
       if (err) return console.log(err);
-      console.log("server started => http://localhost:3000");
+      console.log(`server started => http://localhost:${port}`);
     });
   }
 
