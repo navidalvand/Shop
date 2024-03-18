@@ -75,9 +75,7 @@ class Application {
 
   createRoutes() {
     app.get("/", (req, res) => {
-      res.send({
-        page: "home",
-      });
+      res.redirect("/api-doc");
     });
 
     app.use(mainRoutes);
@@ -88,4 +86,3 @@ class Application {
 }
 
 new Application();
-
